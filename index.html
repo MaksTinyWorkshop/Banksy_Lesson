@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Séquence Banksy – Art et pouvoir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@600;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#CDD0CE; --wall-2:#BCC1BF; --paper:#F3F4F2; --ink:#1E2124; --muted:#4F5559;
+  --paint:#C21D2F; --tape:#E2B33A; --tape-ink:#2A2208; --blue:#2E5E7E; --line:#9EA4A2;
+  --stencil:"Big Shoulders Stencil Display", Impact, "Arial Narrow", sans-serif;
+  --body:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --wall:#24282B; --wall-2:#30363A; --paper:#1A1D20; --ink:#E6E8E6; --muted:#A9B0B3;
+    --paint:#E5484D; --tape:#E8BE4C; --tape-ink:#1E1806; --blue:#7FB0D2; --line:#4A5155;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --wall:#24282B; --wall-2:#30363A; --paper:#1A1D20; --ink:#E6E8E6; --muted:#A9B0B3;
+  --paint:#E5484D; --tape:#E8BE4C; --tape-ink:#1E1806; --blue:#7FB0D2; --line:#4A5155;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0; background:var(--wall); color:var(--ink); font-family:var(--body);
+  font-size:17px; line-height:1.55;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(0,0,0,.035) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 70% 80%, rgba(255,255,255,.05) 0 1px, transparent 1.5px);
+  background-size: 7px 7px, 11px 11px;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--wall)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* Hero */
+header.hero{padding:44px 0 28px}
+.hero h1{
+  font-family:var(--stencil); font-weight:800; font-size:clamp(3rem, 9vw, 6.4rem);
+  line-height:.9; margin:0 0 14px; letter-spacing:.01em;
+}
+.hero .ctx{margin:0;color:var(--muted);max-width:60ch}
+.question{
+  margin:28px 0 0; padding:18px 22px; background:var(--ink); color:var(--wall);
+  font-family:var(--stencil); font-weight:600; font-size:clamp(1.5rem,3.6vw,2.3rem); line-height:1.1;
+  max-width:28ch; transform:rotate(-1deg); position:relative;
+}
+.question small{display:block;font-family:var(--body);font-size:.85rem;font-weight:500;opacity:.8;margin-top:10px;letter-spacing:0}
+.balloon{position:absolute;right:-26px;top:-30px;width:44px;height:88px}
+@media (max-width:600px){.balloon{right:6px;top:-60px}}
+
+/* Progress */
+.progress{display:flex;align-items:center;gap:14px;margin:30px 0 8px;flex-wrap:wrap}
+.bar{flex:1;min-width:180px;height:12px;background:var(--wall-2);border:2px solid var(--ink)}
+.bar span{display:block;height:100%;background:var(--paint);transition:width .3s}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+
+/* Tabs */
+nav.tabs{display:flex;gap:6px;margin:22px 0 0;border-bottom:3px solid var(--ink);flex-wrap:wrap}
+nav.tabs button{
+  background:none;border:none;padding:10px 16px;cursor:pointer;font-weight:600;
+  border:3px solid transparent;border-bottom:none;margin-bottom:-3px;
+}
+nav.tabs button[aria-selected="true"]{background:var(--paper);border-color:var(--ink)}
+.view{background:var(--paper);border:3px solid var(--ink);border-top:none;padding:26px 24px 34px;margin-bottom:60px}
+.view[hidden]{display:none}
+
+/* Timeline */
+.weeks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:26px}
+@media (max-width:760px){.weeks{grid-template-columns:repeat(2,1fr)}}
+.week h3{margin:0 0 6px;font-size:.9rem;font-weight:600;color:var(--muted)}
+.slot{
+  display:flex;align-items:baseline;gap:8px;width:100%;text-align:left;cursor:pointer;
+  background:var(--wall);border:2px solid var(--ink);padding:8px 10px;margin-bottom:6px;position:relative;
+}
+.slot .n{font-family:var(--stencil);font-weight:800;font-size:1.8rem;line-height:1}
+.slot .t{font-size:.82rem;line-height:1.25}
+.slot.ti{border-left:8px solid var(--blue)}
+.slot.final{background:repeating-linear-gradient(-45deg,var(--tape) 0 14px,var(--tape-ink) 14px 18px);}
+.slot.final .n,.slot.final .t{background:var(--tape);color:var(--tape-ink);padding:0 4px}
+.slot[aria-pressed="true"]{outline:3px solid var(--paint);outline-offset:2px}
+.slot.done::after{
+  content:"✓";position:absolute;right:6px;top:4px;color:var(--paint);font-weight:700;font-size:1.1rem;
+}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin:-10px 0 22px}
+.legend i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);vertical-align:-2px;margin-right:6px}
+.legend .l-ti{border-left:6px solid var(--blue)}
+.legend .l-final{background:var(--tape)}
+
+/* Detail */
+.detail h2{font-family:var(--stencil);font-weight:800;font-size:clamp(2rem,5vw,3rem);line-height:1;margin:0 0 6px}
+.meta{color:var(--muted);margin:0 0 18px}
+.task{
+  border:3px solid var(--paint);padding:14px 16px;margin:0 0 22px;max-width:70ch;
+}
+.task strong{color:var(--paint)}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+.detail h4{font-size:1rem;margin:0 0 8px}
+.steps{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.steps li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.steps .min{font-family:var(--stencil);font-weight:800;font-size:1.4rem;min-width:3ch;text-align:right}
+.steps button{background:var(--ink);color:var(--paper);border:none;padding:5px 10px;cursor:pointer;font-size:.85rem}
+.total{margin:10px 0 0;font-size:.9rem;color:var(--muted)}
+.side p{margin:0 0 14px;max-width:60ch}
+.note{background:var(--wall);padding:10px 12px;font-size:.92rem;border-left:4px solid var(--ink)}
+.done-toggle{display:flex;gap:10px;align-items:center;margin-top:22px;font-weight:600;cursor:pointer}
+.done-toggle input{width:20px;height:20px;accent-color:var(--paint)}
+
+/* Final task */
+.scenario{font-size:1.1rem;max-width:68ch}
+.roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:20px 0 30px}
+.role{border:2px solid var(--ink);padding:14px;background:var(--wall)}
+.role h4{font-family:var(--stencil);font-weight:800;font-size:1.7rem;line-height:1;margin:0 0 4px}
+.role .pos{font-size:.9rem;color:var(--muted);margin:0 0 10px}
+.role ul{margin:0;padding-left:18px;font-size:.92rem}
+.role .kw{font-size:.92rem;margin:0 0 8px}
+.grid-eval{width:100%;border-collapse:collapse;font-size:.92rem}
+.table-scroll{overflow-x:auto}
+.grid-eval th,.grid-eval td{border:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}
+.grid-eval th{background:var(--wall)}
+.grid-eval td.lvl{cursor:pointer}
+.grid-eval td.lvl[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+.score{display:flex;align-items:center;gap:16px;margin:16px 0 0;flex-wrap:wrap}
+.score .big{font-family:var(--stencil);font-weight:800;font-size:3rem;line-height:1}
+.btn{background:none;border:2px solid var(--ink);padding:6px 12px;cursor:pointer;font-weight:600}
+
+/* Language */
+.lang{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.lang section{border-top:4px solid var(--ink);padding-top:10px}
+.lang h3{font-family:var(--stencil);font-weight:800;font-size:1.8rem;line-height:1;margin:0 0 4px}
+.lang .when{color:var(--muted);font-size:.88rem;margin:0 0 10px}
+.lang ul{margin:0;padding-left:18px}
+.lang li{margin-bottom:4px}
+.lang em{font-style:italic}
+.vocab{columns:2;column-gap:24px;padding-left:18px}
+
+/* Timer */
+.timer{
+  position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);
+  padding:10px 20px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:16px;align-items:center;z-index:20;
+  flex-wrap:wrap;
+}
+.timer[hidden]{display:none}
+.timer .clock{font-family:var(--stencil);font-weight:800;font-size:2.2rem;line-height:1}
+.timer .clock.over{color:var(--tape)}
+.timer .lbl{flex:1;min-width:150px}
+.timer button{background:var(--paper);color:var(--ink);border:none;padding:6px 12px;cursor:pointer;font-weight:600}
+h2.sec{font-family:var(--stencil);font-weight:800;font-size:2.2rem;margin:30px 0 10px;line-height:1}
+h2.sec:first-child{margin-top:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Banksy : l’art face au pouvoir</h1>
+    <p class="ctx">Séquence d’anglais pour la classe de première, axe 3 « Art et pouvoir ». Dix séances en cinq semaines, une tâche par séance, deux tâches intermédiaires et un conseil municipal pour finir.</p>
+    <p class="question">Can street art still challenge power once the system it attacks starts buying it?
+      <small>Problématique de la séquence</small>
+      <svg class="balloon" viewBox="0 0 44 88" aria-hidden="true"><ellipse cx="22" cy="22" rx="18" ry="21" fill="var(--paint)"/><path d="M22 43 L19 48 L25 48 Z" fill="var(--paint)"/><path d="M22 48 C 14 60, 30 70, 20 86" stroke="var(--ink)" stroke-width="1.5" fill="none"/></svg>
+    </p>
+    <div class="progress">
+      <div class="bar" role="progressbar" aria-label="Séances faites" aria-valuemin="0" aria-valuemax="10" id="bar"><span id="barFill"></span></div>
+      <span id="progressTxt"></span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-seances" aria-selected="true" aria-controls="v-seances">Séances</button>
+    <button role="tab" id="tab-finale" aria-selected="false" aria-controls="v-finale">Tâche finale</button>
+    <button role="tab" id="tab-langue" aria-selected="false" aria-controls="v-langue">Outils de langue</button>
+  </nav>
+
+  <section class="view" id="v-seances" role="tabpanel" aria-labelledby="tab-seances">
+    <div class="weeks" id="weeks"></div>
+    <div class="legend"><span><i></i>Séance</span><span><i class="l-ti"></i>Tâche intermédiaire</span><span><i class="l-final"></i>Tâche finale</span><span>✓ séance faite</span></div>
+    <article class="detail" id="detail" aria-live="polite"></article>
+  </section>
+
+  <section class="view" id="v-finale" role="tabpanel" aria-labelledby="tab-finale" hidden>
+    <h2 class="sec">An emergency council meeting</h2>
+    <p class="scenario">A Banksy has just appeared on a public building in our town. The council meets in an emergency session and must vote: <strong>preserve, remove or sell?</strong></p>
+    <p>Groupes de 5 ou 6, environ 12 minutes par groupe. Les élèves qui ne jouent pas observent et remplissent la grille. Les cartes donnent des mots-clés et des débuts de phrases, jamais d’avis tout rédigé : chacun construit ses phrases.</p>
+    <div class="roles" id="roles"></div>
+
+    <h2 class="sec">Grille d’évaluation</h2>
+    <p>La même grille sert pour les mini-débats de S7 et pour la tâche finale. Clique sur un niveau par critère pour obtenir la note sur 20.</p>
+    <div class="table-scroll"><table class="grid-eval" id="gridEval"></table></div>
+    <div class="score"><span class="big" id="scoreBig">– / 20</span><button class="btn" id="resetGrid">Effacer la grille</button></div>
+  </section>
+
+  <section class="view" id="v-langue" role="tabpanel" aria-labelledby="tab-langue" hidden>
+    <div class="lang" id="lang"></div>
+  </section>
+</div>
+
+<div class="timer" id="timer" hidden>
+  <span class="clock" id="clock">00:00</span>
+  <span class="lbl" id="timerLbl"></span>
+  <button id="timerPause">Pause</button>
+  <button id="timerStop">Arrêter</button>
+</div>
+
+<script>
+const sessions = [
+  {n:1, week:1, len:"1h30", kind:"", title:"Street Art or Vandalism?",
+   task:"<strong>Vox pop</strong> (reporté en S2) : un journaliste interroge un passant devant une œuvre de Banksy.",
+   steps:[["Warm-up : un tag, une fresque. Which one is art?",10],["Annonce de la problématique et de la tâche finale",5],["Kissing Coppers (Brighton, 2004) : décrire, interpréter",20],["One Nation Under CCTV (Londres, 2008) : question pivot",15]],
+   lang:"Lexique du street art (stencil, mural, to deface, to paint over) ; modalisation : it may symbolise, it seems to mock.",
+   link:"Qui décide de ce qui reste sur un mur ? La question de la tâche finale est posée dès le départ.",
+   homework:"Was Westminster Council right to paint over One Nation Under CCTV?",
+   note:"En classe, seules les étapes 1 à 4 ont pu être faites : le vox pop passe en S2."},
+  {n:2, week:1, len:"1h", kind:"", title:"Vox pop",
+   task:"<strong>Vox pop</strong> : par deux, un journaliste et un passant pour ou contre l’œuvre. Trois binômes passent.",
+   steps:[["Correction du devoir sur Westminster Council",10],["Préparation du vox pop en binômes (cartes à mots-clés)",10],["Passage de trois binômes",15],["Mise en commun ; trace écrite mise en ligne",5]],
+   lang:"Poser des questions de journaliste ; donner et justifier un avis.",
+   link:"Premier entraînement à défendre un point de vue face à quelqu’un.",
+   homework:"Apprendre le lexique de S1 (interrogation en S3)."},
+  {n:3, week:2, len:"1h30", kind:"", title:"When Power Erases Art",
+   task:"<strong>React on social media</strong> : un post de 50 à 60 mots dans la peau d’un personnage (juge, manifestant, touriste, porte-parole des tribunaux), avec au moins deux passifs.",
+   steps:[["Interrogation de lexique (S1)",8],["Anticipation : description de la fresque",7],["Compréhension écrite : article adapté",25],["Point de langue : la voix passive",12],["Tâche : le post",15],["Annonce de la trace écrite en ligne",3]],
+   lang:"La voix passive : was hidden, was reported, was scrubbed off, is protected.",
+   link:"L’institution efface l’œuvre : arguments pour les rôles du policier, du propriétaire et de la mairie.",
+   homework:"Finir le post si besoin."},
+  {n:4, week:2, len:"1h", kind:"", title:"The Art Market",
+   task:"<strong>Avis oral du marchand d’art</strong> : en une minute, expliquer pourquoi une œuvre de rue vaut une fortune.",
+   steps:[["Anticipation : une œuvre aux enchères",5],["Vidéo de Sotheby’s : compréhension globale",10],["Second visionnage : chiffres et réactions",10],["Point de langue : exprimer la valeur et l’opinion",8],["Tâche : préparation et trois passages",12]],
+   lang:"It’s worth…, it would be a shame to…, the more…, the more…",
+   link:"Prépare directement le rôle du marchand d’art.",
+   homework:"Aucun, ou lecture préparatoire pour S5."},
+  {n:5, week:3, len:"1h30", kind:"ti", title:"Port Talbot Jigsaw",
+   task:"<strong>Tâche intermédiaire 1</strong> : lecture en puzzle sur Port Talbot (2018) et grille <em>who / wants what / why</em>.",
+   steps:[["Mise en route : qui sont les acteurs ?",5],["Groupes d’experts : un point de vue par groupe",20],["Groupes puzzle : chacun transmet ce qu’il a lu",25],["Mise en commun de la grille",15],["Consigne du devoir",5]],
+   lang:"Médiation : rapporter le point de vue d’un autre (he says that…, she wants…).",
+   link:"La grille complétée devient les cartes de rôle de la tâche finale.",
+   homework:"Compléter la grille au propre.",
+   note:"Seule séance où la lecture longue doit se faire en classe."},
+  {n:6, week:3, len:"1h", kind:"", title:"Bristol Votes",
+   task:"<strong>Mini-échanges en trios</strong> : réagir à une proposition avec les formules relevées.",
+   steps:[["Rappel de la grille de Port Talbot",5],["Écoute : la mairie de Bristol fait voter les habitants",15],["Relevé des formules pour débattre",10],["Mini-échanges en trios",15]],
+   lang:"Accord, désaccord, concession : I see your point, but… ; I couldn’t disagree more.",
+   link:"Donne un modèle réel de vote municipal sur un Banksy.",
+   homework:"Apprendre les formules de débat."},
+  {n:7, week:4, len:"1h30", kind:"ti", title:"Should Our Town Erase Graffiti?",
+   task:"<strong>Tâche intermédiaire 2</strong> : mini-débats à trois, évalués par les pairs avec la grille de la tâche finale.",
+   steps:[["Rappel : concession et conditionnel",10],["Présentation de la grille d’évaluation",5],["Préparation des mini-débats",10],["Mini-débats et co-évaluation",35],["Distribution des rôles de la tâche finale",10]],
+   lang:"Concession (although, even though, whereas) et hypothèse (if we kept it, …).",
+   link:"Répétition générale avec la vraie grille ; les rôles sont distribués à la fin.",
+   homework:"Relire sa carte de rôle."},
+  {n:8, week:4, len:"1h", kind:"", title:"Getting Ready",
+   task:"<strong>Préparation en groupes</strong> : notes réduites à des mots-clés, pas de phrases rédigées.",
+   steps:[["Formation des groupes",5],["Préparation individuelle par rôle",15],["Répétition en groupe",20],["Consignes de passage",5]],
+   lang:"Réinvestir les formules de débat, le passif et le conditionnel.",
+   link:"Séance tampon : si une séance déborde, la préparation peut descendre à 20 minutes.",
+   homework:"Revoir ses mots-clés."},
+  {n:9, week:5, len:"1h30", kind:"final", title:"Council Meetings (1)",
+   task:"<strong>Tâche finale</strong> : passage d’environ la moitié des groupes, 12 minutes chacun.",
+   steps:[["Installation et consignes aux observateurs",5],["Passages des groupes",60],["Retour rapide",5]],
+   lang:"Tout réinvestir.",
+   link:"Les observateurs remplissent la grille.",
+   homework:"Aucun."},
+  {n:10, week:5, len:"1h", kind:"final", title:"Council Meetings (2)",
+   task:"<strong>Tâche finale</strong> : groupes restants, puis bilan. Article de presse locale à rédiger à la maison.",
+   steps:[["Passages des groupes restants",35],["Bilan de la séquence",7],["Consigne de l’article de presse",3]],
+   lang:"Pour l’article : passif et discours rapporté (the council decided that…).",
+   link:"L’article rapporte la décision du conseil.",
+   homework:"Article de presse locale sur la décision du conseil."}
+];
+
+const roles = [
+  {name:"The mayor", pos:"Préside la séance et fait voter.", kw:"public building, budget, tourists, image of the town, vote", starters:["As mayor, I have to think about…","Let’s hear from…","Who is in favour of…?"]},
+  {name:"The owner", pos:"Le bâtiment lui appartient.", kw:"my property, damage, nobody asked me, money, repairs", starters:["This wall belongs to…","Nobody asked me if…","If it is sold, …"]},
+  {name:"The art dealer", pos:"Veut acheter ou faire vendre l’œuvre.", kw:"value, auction, protect it, collectors, millions", starters:["This work is worth…","If it stays outside, it will be…","Selling it would…"]},
+  {name:"A resident", pos:"Vit dans le quartier.", kw:"our neighbourhood, free art, pride, crowds, noise", starters:["For people who live here, …","Art should be…","Even though…, …"]},
+  {name:"A police officer", pos:"Rappelle la loi.", kw:"criminal damage, the law, example, copycats", starters:["The law is…","If we keep it, everybody will…","It was painted without…"]}
+];
+
+const criteria = [
+  ["Défendre la position de son rôle",["Position floue","Position donnée sans justification","Position justifiée par un argument","Plusieurs arguments liés et développés"]],
+  ["Réagir aux autres",["Ne réagit pas","Réagit par oui / non","Accord ou désaccord justifié","Concession et relance du débat"]],
+  ["Lexique de la séquence",["Très pauvre","Mots isolés","Lexique adapté","Lexique riche et précis"]],
+  ["Correction (passif, conditionnel, concession)",["Erreurs qui gênent la compréhension","Erreurs fréquentes","Quelques erreurs","Structures variées et maîtrisées"]],
+  ["Aisance et prononciation",["Lit ses notes","Hésitations nombreuses","Assez fluide","Fluide, s’appuie sur des mots-clés"]]
+];
+
+const langCards = [
+  {t:"The passive", when:"S3, puis article de S10", items:["be + participe passé : <em>The mural was hidden.</em>","Futur : <em>The wall will be cleaned.</em>","Modal : <em>Judges must be respected.</em>","Agent avec by : <em>It was painted over by the council.</em>"]},
+  {t:"Concession", when:"S6 et S7", items:["<em>Although it is illegal, it is beautiful.</em>","<em>Even though it attracts tourists, …</em>","<em>The owner wants money, whereas residents want free art.</em>","<em>It’s true that…, however…</em>"]},
+  {t:"Hypothesis", when:"S7 à S10", items:["Réel : <em>If we sell it, the town will lose…</em>","Imaginaire : <em>If we kept it, tourists would come.</em>","Regret : <em>If the council had protected it, it wouldn’t have been stolen.</em>"]},
+  {t:"Debating", when:"S6 à S10", items:["Accord : <em>I agree with… / That’s a fair point.</em>","Désaccord : <em>I’m afraid I disagree. / I couldn’t disagree more.</em>","Interrompre : <em>Sorry to interrupt, but…</em>","Conclure : <em>All things considered, …</em>"]},
+  {t:"Describing a work", when:"S1 et S3", items:["<em>In the foreground / background, …</em>","<em>It shows… / It depicts…</em>","<em>It may symbolise… / It seems to mock…</em>"]}
+];
+const vocab = ["graffiti","a tag","a mural","a stencil","spray paint","to deface","to paint over","to scrub off","public space","an eyesore","criminal damage","a listed building","a protester","a gavel","an auction","to be worth","a collector","the art market","to preserve","to remove"];
+
+/* Storage, guarded */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+let done = store.get("banksy-done", [1]);
+let current = store.get("banksy-current", 3);
+let gridSel = store.get("banksy-grid", {});
+
+function esc(s){ return s; }
+
+/* Timeline */
+function renderWeeks(){
+  const w = document.getElementById("weeks");
+  w.innerHTML = "";
+  for(let i=1;i<=5;i++){
+    const col = document.createElement("div");
+    col.className = "week";
+    col.innerHTML = `<h3>Semaine ${i}</h3>`;
+    sessions.filter(s=>s.week===i).forEach(s=>{
+      const b = document.createElement("button");
+      b.className = "slot " + s.kind + (done.includes(s.n) ? " done" : "");
+      b.setAttribute("aria-pressed", s.n===current);
+      b.innerHTML = `<span class="n">S${s.n}</span><span class="t">${s.title}<br>${s.len}</span>`;
+      b.addEventListener("click", ()=>{ current = s.n; store.set("banksy-current", current); renderWeeks(); renderDetail(); });
+      col.appendChild(b);
+    });
+    w.appendChild(col);
+  }
+  const pct = done.length*10;
+  document.getElementById("barFill").style.width = pct + "%";
+  document.getElementById("bar").setAttribute("aria-valuenow", done.length);
+  document.getElementById("progressTxt").textContent = `${done.length} séance${done.length>1?"s":""} faite${done.length>1?"s":""} sur 10`;
+}
+
+function renderDetail(){
+  const s = sessions.find(x=>x.n===current);
+  const total = s.steps.reduce((a,b)=>a+b[1],0);
+  const d = document.getElementById("detail");
+  d.innerHTML = `
+    <h2>S${s.n}. ${s.title}</h2>
+    <p class="meta">Semaine ${s.week}, séance de ${s.len}${s.kind==="ti"?", tâche intermédiaire":""}${s.kind==="final"?", tâche finale":""}</p>
+    <p class="task">${s.task}</p>
+    <div class="cols">
+      <div>
+        <h4>Déroulé</h4>
+        <ol class="steps">${s.steps.map((st,i)=>`<li><span class="min">${st[1]}′</span><span>${st[0]}</span><button data-i="${i}" aria-label="Lancer le chrono : ${st[0]}">Chrono</button></li>`).join("")}</ol>
+        <p class="total">Total prévu : ${total} minutes de contenu, pour le temps effectif de la séance.</p>
+      </div>
+      <div class="side">
+        <h4>Point de langue</h4><p>${s.lang}</p>
+        <h4>Vers la tâche finale</h4><p>${s.link}</p>
+        <h4>Devoir</h4><p>${s.homework}</p>
+        ${s.note?`<p class="note">${s.note}</p>`:""}
+        <label class="done-toggle"><input type="checkbox" id="doneBox" ${done.includes(s.n)?"checked":""}> Séance faite</label>
+      </div>
+    </div>`;
+  d.querySelectorAll(".steps button").forEach(b=>b.addEventListener("click",()=>{
+    const st = s.steps[+b.dataset.i];
+    startTimer(`S${s.n} : ${st[0]}`, st[1]*60);
+  }));
+  document.getElementById("doneBox").addEventListener("change", e=>{
+    if(e.target.checked){ if(!done.includes(s.n)) done.push(s.n); }
+    else { done = done.filter(x=>x!==s.n); }
+    store.set("banksy-done", done);
+    renderWeeks();
+  });
+}
+
+/* Timer */
+let tLeft=0, tInt=null, paused=false;
+const clock = document.getElementById("clock");
+function fmt(sec){ const neg = sec<0; sec=Math.abs(sec); return (neg?"+":"") + String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0"); }
+function tick(){ if(paused) return; tLeft--; clock.textContent = fmt(tLeft); clock.classList.toggle("over", tLeft<0); }
+function startTimer(label, secs){
+  clearInterval(tInt); tLeft=secs; paused=false;
+  document.getElementById("timerLbl").textContent = label;
+  document.getElementById("timerPause").textContent = "Pause";
+  clock.textContent = fmt(tLeft); clock.classList.remove("over");
+  document.getElementById("timer").hidden = false;
+  tInt = setInterval(tick,1000);
+}
+document.getElementById("timerPause").addEventListener("click",e=>{ paused=!paused; e.target.textContent = paused?"Reprendre":"Pause"; });
+document.getElementById("timerStop").addEventListener("click",()=>{ clearInterval(tInt); document.getElementById("timer").hidden = true; });
+
+/* Final task */
+function renderRoles(){
+  document.getElementById("roles").innerHTML = roles.map(r=>`
+    <div class="role"><h4>${r.name}</h4><p class="pos">${r.pos}</p>
+    <p class="kw"><strong>Keywords :</strong> ${r.kw}</p>
+    <ul>${r.starters.map(x=>`<li><em>${x}</em></li>`).join("")}</ul></div>`).join("") +
+    `<div class="role"><h4>Groupes de 6</h4><p class="pos">Le sixième élève peut doubler un rôle (deux habitants aux avis opposés) ou jouer le secrétaire de séance qui résume les arguments avant le vote.</p></div>`;
+}
+function renderGrid(){
+  const t = document.getElementById("gridEval");
+  t.innerHTML = `<thead><tr><th scope="col">Critère</th>${[1,2,3,4].map(n=>`<th scope="col">${n} pt${n>1?"s":""}</th>`).join("")}</tr></thead><tbody>` +
+    criteria.map((c,i)=>`<tr><th scope="row">${c[0]}</th>${c[1].map((d,j)=>`<td class="lvl" role="radio" tabindex="0" aria-checked="${gridSel[i]===j+1}" data-c="${i}" data-v="${j+1}">${d}</td>`).join("")}</tr>`).join("") + `</tbody>`;
+  t.querySelectorAll("td.lvl").forEach(td=>{
+    const pick = ()=>{ gridSel[td.dataset.c] = +td.dataset.v; store.set("banksy-grid", gridSel); renderGrid(); };
+    td.addEventListener("click", pick);
+    td.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(); } });
+  });
+  const vals = Object.values(gridSel);
+  document.getElementById("scoreBig").textContent = vals.length===criteria.length ? `${vals.reduce((a,b)=>a+b,0)} / 20` : `– / 20`;
+}
+document.getElementById("resetGrid").addEventListener("click",()=>{ gridSel={}; store.set("banksy-grid", gridSel); renderGrid(); });
+
+/* Language */
+function renderLang(){
+  document.getElementById("lang").innerHTML = langCards.map(c=>`
+    <section><h3>${c.t}</h3><p class="when">${c.when}</p><ul>${c.items.map(i=>`<li>${i}</li>`).join("")}</ul></section>`).join("") +
+    `<section><h3>Key words</h3><p class="when">Toute la séquence</p><ul class="vocab">${vocab.map(v=>`<li><em>${v}</em></li>`).join("")}</ul></section>`;
+}
+
+/* Tabs */
+const tabs = document.querySelectorAll('nav.tabs button');
+tabs.forEach(b=>b.addEventListener("click",()=>{
+  tabs.forEach(x=>{ x.setAttribute("aria-selected", x===b); document.getElementById(x.getAttribute("aria-controls")).hidden = x!==b; });
+}));
+
+renderWeeks(); renderDetail(); renderRoles(); renderGrid(); renderLang();
+</script>
+</body>
+</html>
